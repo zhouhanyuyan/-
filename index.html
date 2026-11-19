@@ -1,0 +1,492 @@
+<!doctype html>
+<html lang="zh-CN" data-page-type="interactive-test">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="25道生活化选择题，测一测你是哪种高敏感类型。趣味娱乐向，仅供自我参考。" />
+  <meta name="theme-color" content="#f8f5f0" />
+  <title>测一测｜看看你是哪种高敏感类型</title>
+  <style>
+    :root {
+      --bg: #f8f5f0;
+      --paper: rgba(255,255,255,.82);
+      --paper-strong: #fffdf9;
+      --ink: #2d3430;
+      --muted: #7b827e;
+      --sage: #94ad9c;
+      --sage-deep: #648272;
+      --peach: #e7b39b;
+      --peach-deep: #c9876e;
+      --sky: #a9c7cf;
+      --butter: #e9d6a3;
+      --line: rgba(45,52,48,.1);
+      --shadow: 0 22px 60px rgba(82, 97, 88, .13);
+      --radius-xl: 30px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --ease: cubic-bezier(.2,.75,.2,1);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-width: 320px;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 10% 6%, rgba(169,199,207,.25), transparent 26rem),
+        radial-gradient(circle at 92% 18%, rgba(231,179,155,.22), transparent 24rem),
+        linear-gradient(145deg, #fbf9f4 0%, var(--bg) 55%, #f1f4ee 100%);
+      font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+      line-height: 1.65;
+    }
+
+    button { font: inherit; }
+    button:focus-visible { outline: 3px solid rgba(100,130,114,.35); outline-offset: 3px; }
+    .shell { width: min(1080px, calc(100% - 36px)); margin: 0 auto; }
+    .hidden { display: none !important; }
+
+    .screen {
+      min-height: 100svh;
+      display: grid;
+      place-items: center;
+      padding: 28px 0;
+    }
+
+    .hero-card {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      padding: clamp(34px, 7vw, 86px) clamp(24px, 7vw, 92px);
+      border: 1px solid rgba(255,255,255,.7);
+      border-radius: var(--radius-xl);
+      background: rgba(255,255,255,.68);
+      box-shadow: var(--shadow);
+      isolation: isolate;
+    }
+
+    .hero-card::before,
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      filter: blur(2px);
+      z-index: -1;
+    }
+    .hero-card::before {
+      width: 270px; height: 270px; right: -96px; top: -88px;
+      background: rgba(169,199,207,.45);
+    }
+    .hero-card::after {
+      width: 220px; height: 220px; left: -100px; bottom: -120px;
+      background: rgba(231,179,155,.34);
+    }
+
+    .eyebrow, .result-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--sage-deep);
+      font-size: 13px;
+      letter-spacing: .08em;
+      font-weight: 700;
+    }
+    .eyebrow::before, .result-kicker::before {
+      content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--peach);
+      box-shadow: 14px 0 0 var(--sky);
+      margin-right: 9px;
+    }
+    h1, h2, h3, p { margin: 0; }
+    h1 {
+      max-width: 720px;
+      margin-top: 18px;
+      font-size: clamp(38px, 8vw, 76px);
+      line-height: 1.1;
+      letter-spacing: -.06em;
+      font-weight: 800;
+    }
+    .hero-lead {
+      max-width: 620px;
+      margin-top: 24px;
+      color: #646e68;
+      font-size: clamp(16px, 2.5vw, 20px);
+    }
+    .notice {
+      display: inline-flex;
+      max-width: 100%;
+      margin-top: 23px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      color: #6d756f;
+      background: rgba(255,255,255,.72);
+      border: 1px solid rgba(45,52,48,.08);
+      font-size: 13px;
+    }
+    .start-row { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: 34px; }
+    .primary-btn, .ghost-btn {
+      min-height: 50px;
+      padding: 0 22px;
+      border: 0;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: transform .22s var(--ease), box-shadow .22s var(--ease), background .22s var(--ease);
+    }
+    .primary-btn {
+      color: #fff;
+      background: var(--sage-deep);
+      box-shadow: 0 13px 24px rgba(100,130,114,.24);
+      font-weight: 700;
+    }
+    .primary-btn:hover { transform: translateY(-2px); box-shadow: 0 17px 28px rgba(100,130,114,.3); }
+    .primary-btn:active { transform: translateY(1px) scale(.98); }
+    .ghost-btn { color: var(--sage-deep); background: rgba(255,255,255,.78); border: 1px solid rgba(100,130,114,.2); }
+    .ghost-btn:hover { transform: translateY(-2px); background: #fff; }
+    .tiny-note { color: #89918b; font-size: 12px; }
+
+    .quiz-wrap { padding: 30px 0 56px; }
+    .quiz-top { display: flex; justify-content: space-between; align-items: end; gap: 20px; margin-bottom: 18px; }
+    .quiz-title { font-size: clamp(24px, 5vw, 38px); letter-spacing: -.04em; line-height: 1.2; }
+    .progress-copy { color: var(--muted); font-size: 14px; white-space: nowrap; }
+    .progress-track { height: 8px; background: rgba(100,130,114,.14); border-radius: 99px; overflow: hidden; }
+    .progress-bar { height: 100%; width: 4%; border-radius: inherit; background: linear-gradient(90deg, var(--sage-deep), var(--sky)); transition: width .35s var(--ease); }
+
+    .question-card {
+      margin-top: 22px;
+      padding: clamp(24px, 5vw, 46px);
+      border-radius: var(--radius-xl);
+      background: var(--paper);
+      border: 1px solid rgba(255,255,255,.8);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+    }
+    .question-no { color: var(--peach-deep); font-weight: 800; font-size: 14px; letter-spacing: .08em; }
+    .question-text { margin-top: 13px; font-size: clamp(24px, 4.5vw, 40px); line-height: 1.3; letter-spacing: -.04em; }
+    .question-hint { margin-top: 12px; color: var(--muted); font-size: 14px; }
+    .options { display: grid; gap: 12px; margin-top: 28px; }
+    .option {
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      width: 100%;
+      padding: 17px 18px;
+      text-align: left;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      color: var(--ink);
+      background: rgba(255,255,255,.72);
+      cursor: pointer;
+      transition: transform .22s var(--ease), border-color .22s var(--ease), background .22s var(--ease), box-shadow .22s var(--ease);
+    }
+    .option:hover { transform: translateY(-2px); border-color: rgba(100,130,114,.36); box-shadow: 0 8px 20px rgba(82,97,88,.08); }
+    .option.selected { border-color: var(--sage-deep); background: #f1f7f2; box-shadow: 0 0 0 3px rgba(100,130,114,.12); }
+    .option-mark {
+      flex: 0 0 28px; width: 28px; height: 28px; display: grid; place-items: center;
+      border-radius: 50%; color: #738078; background: #f0f3ee; font-size: 13px; font-weight: 800;
+    }
+    .option.selected .option-mark { color: #fff; background: var(--sage-deep); }
+    .option-copy { display: grid; gap: 3px; font-size: 16px; line-height: 1.55; }
+    .option-copy small { color: var(--muted); font-size: 12px; }
+    .quiz-actions { display: flex; justify-content: space-between; gap: 12px; margin-top: 25px; }
+    .quiz-actions .primary-btn:disabled { opacity: .45; cursor: not-allowed; transform: none; box-shadow: none; }
+    .back-btn { min-height: 50px; padding: 0 16px; border: 0; background: transparent; color: var(--muted); cursor: pointer; }
+    .back-btn:hover { color: var(--ink); }
+
+    .result-wrap { padding: 28px 0 60px; }
+    .result-card { overflow: hidden; border-radius: var(--radius-xl); background: rgba(255,255,255,.78); box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,.82); }
+    .result-head { position: relative; padding: clamp(28px, 6vw, 62px); background: linear-gradient(135deg, #edf5ef, #fdf6ef 55%, #eef5f4); }
+    .result-head::after { content: "✦"; position: absolute; right: 8%; top: 22%; color: rgba(201,135,110,.42); font-size: 62px; transform: rotate(14deg); }
+    .result-title { max-width: 760px; margin-top: 16px; font-size: clamp(34px, 7vw, 64px); line-height: 1.1; letter-spacing: -.06em; }
+    .slogan { display: inline-block; margin-top: 20px; padding: 9px 14px; color: #6a756e; background: rgba(255,255,255,.72); border-radius: 999px; font-size: 14px; }
+    .result-body { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: clamp(22px, 5vw, 42px); }
+    .result-block { padding: 22px; border-radius: var(--radius-lg); background: rgba(248,245,240,.7); border: 1px solid rgba(45,52,48,.06); }
+    .result-block.full { grid-column: 1 / -1; }
+    .result-block h3 { font-size: 16px; color: var(--sage-deep); }
+    .result-block p { margin-top: 10px; color: #59635c; font-size: 15px; }
+    .share-line { margin-top: 22px; padding-top: 18px; border-top: 1px dashed rgba(100,130,114,.25); color: #5e6b62; font-size: 14px; }
+    .result-actions { display: flex; flex-wrap: wrap; gap: 12px; padding: 0 clamp(22px, 5vw, 42px) clamp(26px, 5vw, 44px); }
+    .result-footnote { padding: 0 clamp(22px, 5vw, 42px) 30px; color: var(--muted); font-size: 12px; }
+    .fade-in { animation: fadeIn .48s var(--ease) both; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @media (max-width: 700px) {
+      .shell { width: min(100% - 24px, 1080px); }
+      .screen { padding: 12px 0; }
+      .hero-card { border-radius: 24px; }
+      .quiz-top { align-items: flex-start; flex-direction: column; gap: 8px; }
+      .progress-copy { white-space: normal; }
+      .question-card { border-radius: 24px; }
+      .result-body { grid-template-columns: 1fr; }
+      .result-block.full { grid-column: auto; }
+      .result-title { max-width: 90%; }
+      .result-head::after { right: 5%; top: 12%; font-size: 42px; }
+      .start-row, .result-actions { align-items: stretch; flex-direction: column; }
+      .primary-btn, .ghost-btn { width: 100%; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section id="home" class="screen" aria-labelledby="page-title">
+      <div class="shell">
+        <div class="hero-card fade-in">
+          <div class="eyebrow">25道生活化小题 · 约3分钟</div>
+          <h1 id="page-title">测一测｜看看你是哪种高敏感类型</h1>
+          <p class="hero-lead">从你下意识的选择里，捞出那些细腻、柔软又很有力量的感受力。没有标准答案，凭第一直觉就好。</p>
+          <div class="notice">趣味娱乐向，仅供自我参考，非专业心理诊断</div>
+          <div class="start-row">
+            <button id="startBtn" class="primary-btn" type="button">开始测试 <span aria-hidden="true">→</span></button>
+            <span class="tiny-note">答完即出结果，支持反复重测</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="quiz" class="hidden" aria-labelledby="quizTitle">
+      <div class="shell quiz-wrap">
+        <div class="quiz-top">
+          <div>
+            <div class="eyebrow">慢一点，听听自己的第一反应</div>
+            <h2 id="quizTitle" class="quiz-title">今天的你，会怎么选？</h2>
+          </div>
+          <div id="progressCopy" class="progress-copy" aria-live="polite">第 1 / 25 题</div>
+        </div>
+        <div class="progress-track" aria-label="答题进度"><div id="progressBar" class="progress-bar"></div></div>
+        <div id="questionCard" class="question-card fade-in"></div>
+      </div>
+    </section>
+
+    <section id="result" class="hidden" aria-labelledby="resultTitle">
+      <div class="shell result-wrap">
+        <div id="resultCard" class="result-card fade-in"></div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const questions = [
+      { text: "刚走进一家新开的咖啡店，你最先注意到什么？", hint: "凭第一眼印象选就好", options: [
+        ["店里放的音乐有点大，我会先找安静的位置", "感官"],
+        ["店员的语气和店里人的情绪，让我立刻有感觉", "共情"],
+        ["我会默默猜测：这里的老板是什么样的人？", "脑补"],
+        ["灯光、杯子和空气里的氛围，整体很有画面感", "深度"]
+      ]},
+      { text: "朋友回消息只回了一个“嗯”，你的脑内更接近哪种状态？", options: [
+        ["没事，可能只是刚好忙着", "共情"], ["我会回看刚刚那句话是不是说错了什么", "脑补"], ["有一点在意，但很快就去做别的事", "感官"], ["比起字面，我更在意我们关系里的气氛有没有变", "深度"]
+      ]},
+      { text: "周末去看电影，你更想坐在哪里？", options: [
+        ["靠边、光线柔和一点的位置，整个人更放松", "感官"], ["旁边的人看起来友善、有安全感就好", "共情"], ["我会提前研究座位图，顺便想象观影体验", "脑补"], ["中间偏后，沉浸在整个故事和声光里", "深度"]
+      ]},
+      { text: "别人跟你说“我没事”，但语气明显不太一样，你会？", options: [
+        ["先感受到那份情绪，再轻轻问一句要不要聊聊", "共情"], ["脑内开始复盘：是不是我哪里让对方不舒服了", "脑补"], ["注意到对方的声音、停顿和表情变化", "感官"], ["不急着追问，想给对方留一块舒服的空间", "深度"]
+      ]},
+      { text: "下班回到家，你的第一件事通常是？", options: [
+        ["把灯调暗、换舒服的衣服，先让身体松下来", "感官"], ["回想今天遇到的人，感受他们的状态", "共情"], ["躺下后脑子还在自动播放今天的片段", "脑补"], ["泡一杯喜欢的茶，安静地做点真正想做的事", "深度"]
+      ]},
+      { text: "旅行住进一家民宿，你会特别在意哪件事？", options: [
+        ["床品触感、香味、隔音和窗帘透不透光", "感官"], ["店主和旅伴相处起来是不是舒服自然", "共情"], ["房间细节会让我联想到这里发生过的故事", "脑补"], ["整体审美和空间气质，能不能让我真正沉进去", "深度"]
+      ]},
+      { text: "聚会结束后，你更常出现哪种感觉？", options: [
+        ["觉得信息量有点大，想独处安静一会儿", "感官"], ["还在回味大家的情绪，谁开心谁疲惫都记得", "共情"], ["把某句对话翻来覆去地想，越想越有细节", "脑补"], ["真正有共鸣的聊天会让我满足，客套寒暄则很消耗", "深度"]
+      ]},
+      { text: "逛超市时，你比较容易被什么吸引？", options: [
+        ["包装的颜色、手感、香味或货架的灯光", "感官"], ["某个路人温柔照顾小朋友的瞬间", "共情"], ["一个小物件让我突然联想到很多生活片段", "脑补"], ["有故事、有设计感、看起来很有品味的东西", "深度"]
+      ]},
+      { text: "当你需要做一个重要决定时，你更像？", options: [
+        ["先确认自己的身体感受：紧绷还是舒展", "感官"], ["会想这件事对身边人的影响和感受", "共情"], ["列出很多可能性，在脑中模拟不同结局", "脑补"], ["想清楚它是否符合自己真正看重的价值和意义", "深度"]
+      ]},
+      { text: "有人在你旁边不停敲桌子，你会？", options: [
+        ["注意力很难不被带走，想换个位置", "感官"], ["会猜对方是不是紧张或心情不好", "共情"], ["一边听一边想：他是不是在暗示什么", "脑补"], ["如果环境允许，我会温和地说出来，让彼此都舒服", "深度"]
+      ]},
+      { text: "你收到一份没有署名的小礼物，第一反应是？", options: [
+        ["先摸摸材质、闻闻味道，感受它的质地", "感官"], ["会猜送礼的人是不是想默默表达关心", "共情"], ["把所有可能的人选和线索在脑内排一遍", "脑补"], ["很在意这份礼物背后的心意和故事", "深度"]
+      ]},
+      { text: "你更容易被哪一种内容打动？", options: [
+        ["声音、画面、色彩和细节都很舒服的作品", "感官"], ["真实表达人与人之间理解和陪伴的故事", "共情"], ["留白很多、可以反复琢磨的情节", "脑补"], ["有审美、有观点、能触碰内心的作品", "深度"]
+      ]},
+      { text: "在团队里，你通常会自然地注意到？", options: [
+        ["会议室的温度、光线、声音是否让人舒服", "感官"], ["谁今天状态不太好，谁需要被照顾一下", "共情"], ["一句话背后的潜台词和大家的微妙反应", "脑补"], ["这件事真正的重点和大家有没有在说真话", "深度"]
+      ]},
+      { text: "别人夸你“想得真周到”，你觉得最像哪一部分？", options: [
+        ["我会提前把可能不舒服的细节调整好", "感官"], ["我总会顾及每个人的心情和处境", "共情"], ["我习惯提前推演很多可能发生的情况", "脑补"], ["我希望一件事从体验到意义都被认真对待", "深度"]
+      ]},
+      { text: "你第一次去一个新城市，最想做的事是？", options: [
+        ["去感受当地的风、光线、气味和街道声音", "感官"], ["观察当地人怎么生活、怎么彼此相处", "共情"], ["找一条有故事的路线，边走边想象这里的过去", "脑补"], ["去美术馆、老建筑或有文化气息的地方", "深度"]
+      ]},
+      { text: "你和别人发生小小的误会后，会？", options: [
+        ["先让自己缓一缓，不在情绪高点继续说", "感官"], ["很快站到对方角度，理解他为什么那样说", "共情"], ["在脑中重播整段对话，寻找转折点", "脑补"], ["想把话说开，恢复真实而舒服的连接", "深度"]
+      ]},
+      { text: "哪一种“独处”最像你的充电方式？", options: [
+        ["戴耳机、关小灯、裹进柔软的毯子里", "感官"], ["给重要的人发一条温柔消息，确认彼此都好", "共情"], ["散步或发呆，让脑内的小剧场慢慢演完", "脑补"], ["读一本书、听一张专辑，认真和自己待在一起", "深度"]
+      ]},
+      { text: "看到一张很有氛围感的照片，你会？", options: [
+        ["先被光影、颗粒、颜色和构图吸引", "感官"], ["会想照片里的人当时是不是很幸福", "共情"], ["忍不住给它补一个完整的前因后果", "脑补"], ["觉得它像一个入口，让我进入某种情绪和世界", "深度"]
+      ]},
+      { text: "你更容易记住别人什么？", options: [
+        ["声音、走路的节奏、衣服的材质和气味", "感官"], ["对方当时的情绪，以及他说话时的温度", "共情"], ["某句话的措辞、停顿和当时的上下文", "脑补"], ["那个人给我的整体感觉，以及我们聊过的深层话题", "深度"]
+      ]},
+      { text: "当周围人开始抱怨时，你通常会？", options: [
+        ["很快感到环境变得嘈杂，想暂时离开一下", "感官"], ["不知不觉也被那份低落影响，想帮大家缓和", "共情"], ["脑中开始分析每个人的立场和真正原因", "脑补"], ["愿意听，但更希望最后能聊到真实的问题和解决方式", "深度"]
+      ]},
+      { text: "你挑选日常用品时，更容易被什么说服？", options: [
+        ["拿在手里的触感、使用时的声音和细节", "感官"], ["品牌是否有温度，是否在认真照顾使用者", "共情"], ["我会查很多评价，想把各种可能都排除", "脑补"], ["设计是否耐看、理念是否和我认同的生活方式一致", "深度"]
+      ]},
+      { text: "你对“氛围”的理解更接近？", options: [
+        ["光线、声音、气味和触感共同制造的舒服程度", "感官"], ["在场的人有没有放松、真诚、彼此照顾", "共情"], ["空气里那些说不清、但好像有线索的变化", "脑补"], ["一个空间或一段关系有没有自己的气质和故事", "深度"]
+      ]},
+      { text: "临睡前，你的大脑通常会播放什么？", options: [
+        ["先把明天的环境和节奏安排得舒服一点", "感官"], ["想起今天遇到的人，默默祝他们都好", "共情"], ["白天没想完的对话，夜里又回来敲门", "脑补"], ["沉进一段音乐、文字或回忆里，慢慢收束情绪", "深度"]
+      ]},
+      { text: "如果把你的感受力比作一种东西，你更像？", options: [
+        ["一台高解析度的收音机，细微声响也能听见", "感官"], ["一块会吸收温度的海绵，很容易感知别人", "共情"], ["一间不停亮灯的放映室，总能展开新的剧情", "脑补"], ["一座有回声的剧院，情绪和美感会停留很久", "深度"]
+      ]},
+      { text: "做完这套题，你最希望得到什么？", options: [
+        ["找到让自己更舒服、更松弛的小方法", "感官"], ["确认自己的温柔和共情是很珍贵的能力", "共情"], ["有人懂得我那些复杂又可爱的内心戏", "脑补"], ["更清楚自己为什么需要真实、深度和美感", "深度"]
+      ]}
+    ];
+
+    const profiles = {
+      感官: {
+        name: "感官型高敏感",
+        subtitle: "你是那个把世界的细节调成高清的人",
+        why: "你对声音、光线、气味和触感的变化特别有感。别人觉得“还好”的细节，到了你这里会变成清晰的体验。你不是太挑剔，只是接收世界的频道更多、更细。",
+        shine: "你的专属闪光点：审美敏锐、体验力强，很会把日常过得有质感。给自己的小建议：允许自己选择舒服的环境，先照顾好感受，再去拥抱热闹。",
+        slogan: "我不是想太多，我只是把世界听得更清楚。"
+      },
+      共情: {
+        name: "共情型高敏感",
+        subtitle: "你是那个能先一步感受到别人心情的人",
+        why: "你很容易捕捉到语气里的温度、表情里的停顿，也会自然地替别人多想一步。你身上的温柔不是勉强自己迎合，而是一种真诚的理解力。",
+        shine: "你的专属闪光点：共情力强、让人安心，是很珍贵的陪伴者。给自己的小建议：关心别人时，也把自己放进被照顾的名单里。",
+        slogan: "我能感受到你，也在练习好好感受自己。"
+      },
+      脑补: {
+        name: "脑补型高敏感",
+        subtitle: "你是那个会为一句话写出番外篇的人",
+        why: "你会记得对话里的细节，也习惯从语气、停顿和表情里寻找更多线索。脑内小剧场很丰富，说明你的观察力和想象力都在认真工作。",
+        shine: "你的专属闪光点：洞察细、想象力强，常常能看见事情的另一层。给自己的小建议：当思绪绕圈时，先把故事写下来，再把结局交还给现实。",
+        slogan: "我的脑内有很多频道，每一条都藏着故事。"
+      },
+      深度: {
+        name: "深度感受型高敏感",
+        subtitle: "你是那个愿意把生活过出回声的人",
+        why: "你不太满足于表面的热闹，更在意一段关系有没有真诚、一件事有没有意义。你对美感、氛围和深度的感知，让你总能和世界建立很有质地的连接。",
+        shine: "你的专属闪光点：有审美、有洞察，也很懂得珍惜真心。给自己的小建议：不必逼自己适应所有社交，留住那些让你心里亮起来的人和事。",
+        slogan: "我喜欢深一点，因为那里有真正的回声。"
+      }
+    };
+
+    const state = { current: 0, answers: Array(questions.length).fill(null) };
+    const home = document.getElementById('home');
+    const quiz = document.getElementById('quiz');
+    const result = document.getElementById('result');
+    const questionCard = document.getElementById('questionCard');
+    const progressBar = document.getElementById('progressBar');
+    const progressCopy = document.getElementById('progressCopy');
+
+    const scrollTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    function renderQuestion() {
+      const q = questions[state.current];
+      const previous = state.answers[state.current];
+      const isLast = state.current === questions.length - 1;
+      progressCopy.textContent = `第 ${state.current + 1} / ${questions.length} 题`;
+      progressBar.style.width = `${((state.current + 1) / questions.length) * 100}%`;
+      questionCard.classList.remove('fade-in');
+      void questionCard.offsetWidth;
+      questionCard.classList.add('fade-in');
+      questionCard.innerHTML = `
+        <div class="question-no">QUESTION ${String(state.current + 1).padStart(2, '0')}</div>
+        <h3 class="question-text">${q.text}</h3>
+        <p class="question-hint">选最接近你平时状态的一项，不用想太久。</p>
+        <div class="options" role="radiogroup" aria-label="答题选项">
+          ${q.options.map((item, index) => `
+            <button class="option ${previous === index ? 'selected' : ''}" type="button" data-index="${index}" role="radio" aria-checked="${previous === index}">
+              <span class="option-mark">${String.fromCharCode(65 + index)}</span>
+              <span class="option-copy">${item[0]}</span>
+            </button>`).join('')}
+        </div>
+        <div class="quiz-actions">
+          <button class="back-btn" type="button" id="backBtn" ${state.current === 0 ? 'disabled' : ''}>← 上一题</button>
+          <button class="primary-btn" type="button" id="nextBtn" ${previous === null ? 'disabled' : ''}>${isLast ? '查看我的结果' : '下一题'} <span aria-hidden="true">→</span></button>
+        </div>`;
+
+      questionCard.querySelectorAll('.option').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const index = Number(btn.dataset.index);
+          state.answers[state.current] = index;
+          questionCard.querySelectorAll('.option').forEach(option => {
+            const selected = option === btn;
+            option.classList.toggle('selected', selected);
+            option.setAttribute('aria-checked', selected);
+          });
+          questionCard.querySelector('#nextBtn').disabled = false;
+        });
+      });
+      questionCard.querySelector('#backBtn').addEventListener('click', () => {
+        if (state.current > 0) { state.current -= 1; renderQuestion(); scrollTop(); }
+      });
+      questionCard.querySelector('#nextBtn').addEventListener('click', () => {
+        if (state.answers[state.current] === null) return;
+        if (isLast) showResult();
+        else { state.current += 1; renderQuestion(); scrollTop(); }
+      });
+    }
+
+    function showResult() {
+      const scores = { 感官: 0, 共情: 0, 脑补: 0, 深度: 0 };
+      state.answers.forEach((answer, index) => { if (answer !== null) scores[questions[index].options[answer][1]] += 1; });
+      const order = ['感官', '共情', '脑补', '深度'];
+      const winner = order.reduce((best, key) => scores[key] > scores[best] ? key : best, order[0]);
+      const profile = profiles[winner];
+      result.innerHTML = `
+        <div class="result-head">
+          <div class="result-kicker">你的测试结果</div>
+          <h2 id="resultTitle" class="result-title">${profile.name}</h2>
+          <p class="hero-lead">${profile.subtitle}</p>
+          <div class="slogan">${profile.slogan}</div>
+        </div>
+        <div class="result-body">
+          <article class="result-block full"><h3>为什么是你</h3><p>${profile.why}</p></article>
+          <article class="result-block full"><h3>你的专属闪光点 & 小建议</h3><p>${profile.shine}</p><div class="share-line">适合发给朋友的一句话：${profile.slogan}</div></article>
+        </div>
+        <div class="result-actions">
+          <button class="primary-btn" type="button" id="restartBtn">再测一次 <span aria-hidden="true">↻</span></button>
+          <button class="ghost-btn" type="button" id="copyBtn">复制结果文案</button>
+        </div>
+        <p class="result-footnote">这是一份轻松的趣味测试，不是专业心理诊断。你的感受力没有固定模板，结果只是今天的一个小切面。</p>`;
+      home.classList.add('hidden');
+      quiz.classList.add('hidden');
+      result.classList.remove('hidden');
+      result.querySelector('#restartBtn').addEventListener('click', restart);
+      result.querySelector('#copyBtn').addEventListener('click', async (event) => {
+        const text = `${profile.name}\n${profile.slogan}\n${profile.why}`;
+        try {
+          await navigator.clipboard.writeText(text);
+          event.currentTarget.textContent = '已复制 ✓';
+          setTimeout(() => event.currentTarget.textContent = '复制结果文案', 1800);
+        } catch { event.currentTarget.textContent = '请长按复制'; }
+      });
+      scrollTop();
+    }
+
+    function restart() {
+      state.current = 0;
+      state.answers = Array(questions.length).fill(null);
+      result.classList.add('hidden');
+      quiz.classList.remove('hidden');
+      renderQuestion();
+      scrollTop();
+    }
+
+    document.getElementById('startBtn').addEventListener('click', () => {
+      home.classList.add('hidden');
+      quiz.classList.remove('hidden');
+      renderQuestion();
+      scrollTop();
+    });
+  </script>
+</body>
+</html>
